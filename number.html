@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Project Animal</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-cyborg-gaming.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    
+<!--
+
+TemplateMo 579 Cyborg Gaming
+
+https://templatemo.com/tm-579-cyborg-gaming
+
+-->
+<script type="text/javascript">
+  var mousePressed = false;
+  var lastX, lastY;
+  var ctx;
+  function init(){
+    canvas = document.getElementById('mycanvas')
+    ctx = canvas.getContext('2d')
+    ctx.fillStyle = 'black'
+    ctx.fillRect(0,0,canvas.width,canvas.height)
+
+    $("#mycanvas").mousedown(function (e) {
+      mousePressed = true
+      draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false)
+    });
+
+    $("#mycanvas").mousemove(function (e) {
+      if (mousePressed){
+        draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true)
+      }
+    });
+
+    $("#mycanvas").mouseup(function (e) {
+      mousePressed = false
+    });
+
+    $("#mycanvas").mouseleave(function (e) {
+      mousePressed = false
+    });
+
+
+    // canvas.addEventListener("mousemove", function (e) {
+    //   if (mousePressed){
+    //     draw(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop, true)
+    //   }
+    // }, false);
+    // canvas.addEventListener("mousedown", function (e) {
+    //   mousePressed = true
+    //   draw(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop, false)
+    // }, false);
+    // canvas.addEventListener("mouseup", function (e) {
+    //   mousePressed = false
+    // }, false);
+    // canvas.addEventListener("mouseout", function (e) {
+    //   mousePressed = false
+    // }, false);
+    
+  }
+
+  function draw(x,y,isDown){
+    if (isDown){
+      ctx.beginPath()
+      ctx.strokeStyle = 'white'
+      ctx.lineWidth = 20
+      ctx.lineJoin = 'round'
+      ctx.moveTo(lastX,lastY)
+      ctx.lineTo(x,y)
+      ctx.closePath()
+      ctx.stroke()
+    }
+    lastX = x
+    lastY = y
+  }
+
+  function clearCanvas(){
+    // canvas = document.getElementById('mycanvas')
+    // ctx = canvas.getContext('2d')
+    ctx.setTransform(1,0,0,1,0,0)
+    // Ctx.fillStyle = 'black'
+    ctx.fillRect(0,0,canvas.width,canvas.height)
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Ctx.fillStyle = 'black'
+  }
+
+  function predict(){
+    var img = document.getElementById("mycanvas").toDataURL("image/png");
+    img = img.replace(/^data:image\/(png|jpg);base64,/,"");
+
+    $.ajax({
+      type: "POST",
+      url: "/digit",
+      data: JSON.stringify({image:img}),
+      contentType: 'application/json;charset=UTF-8',
+      dataType: 'json',
+      success: function(msg,status,jqXHR){
+        var data = JSON.parse(jqXHR.responseText);
+        var prediction = data.prediction
+        document.getElementById("ketqua").innerHTML = prediction
+      }
+    });
+  }
+</script>
+  </head>
+
+<body onload="init()">
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="/" class="logo">
+                        <img src="assets/images/logo.png" alt="">
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Search End ***** -->
+                    <!-- <div class="search-input">
+                      <form id="search" action="#">
+                        <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword" onkeypress="handle" />
+                        <i class="fa fa-search"></i>
+                      </form>
+                    </div> -->
+                    <!-- ***** Search End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                      <li><a href="/">Home</a></li>
+                      <li><a href="traffic">Traffic</a></li>
+                      <li><a href="animal">Animal</a></li>
+                      <li><a href="digit" class="active">Number</a></li>
+                      <li><a href="sign_language">Sign Language</a></li>
+                      <li><a href="aboutus">About Us <img src="assets/images/profile-header.jpg" alt=""></a></li>
+                    </ul>   
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-content">
+
+          <!-- ***** Banner Start ***** -->
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="main-profile ">
+                  <div class="heading-section">
+                    <h4>Project Number</h4> 
+                    <!-- <em>Machine Learning</em> -->
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <canvas id="mycanvas" width="280" height="280" style="border: 2px solid #d63384; margin-left: 60px;"></canvas>
+                      <br>
+                      <!-- <button id="draw">Drawing</button> -->
+                      <button class="btn-Predict" onclick="javascript:clearCanvas()" style="margin-left: 130px;">Remove</button>
+                    </div>
+                    <div class="col-lg-4 align-self-center">
+                      <div class="main-info header-text">
+                        <span>Project Number</span>
+                        <br>
+                          <button class="btn-Predict" onclick="predict()" >Predict</button>
+                        <br>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 align-self-center">
+                        <ul>
+                          <li>Predict: <span>
+                          <div id="ketqua"></div>
+                        </span></li>
+                        <!-- <li>Viết cho có <span>None</span></li>
+                          <li>Viết cho có <span>29</span></li> -->
+                        </ul>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          <!-- ***** Gaming Library End ***** -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright © 2036 <a href="#">Cyborg Gaming</a> Company. All rights reserved. 
+          
+          <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">TemplateMo</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+  <script src="assets/js/isotope.min.js"></script>
+  <script src="assets/js/owl-carousel.js"></script>
+  <script src="assets/js/tabs.js"></script>
+  <script src="assets/js/popup.js"></script>
+  <script src="assets/js/custom.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fabric@5.2.4/dist/fabric.min.js"></script>
+  <!-- <script src="main.js"></script> -->
+
+  
+  </body>
+
+</html>
